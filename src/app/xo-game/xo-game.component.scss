@@ -1,0 +1,97 @@
+.xo-game-container {
+  max-width: 500px;
+  margin: 0 auto;
+  
+  .game-status {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    
+    &.winner {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+    }
+  }
+  
+  .game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    
+    .board-row {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .board-cell {
+      height: 100px;
+      width: 100px;
+      font-size: 40px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover:not(:disabled) {
+        background-color: #e6e6e6;
+      }
+      
+      &:disabled {
+        cursor: not-allowed;
+      }
+      
+      &.x-cell {
+        color: #e74c3c;
+      }
+      
+      &.o-cell {
+        color: #3498db;
+      }
+    }
+  }
+  
+  .game-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .score-board {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    
+    h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    
+    .scores {
+      display: flex;
+      justify-content: space-around;
+      
+      .score-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        .score-value {
+          font-size: 24px;
+          font-weight: bold;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+}

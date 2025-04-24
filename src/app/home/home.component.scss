@@ -1,0 +1,31 @@
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  
+  ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    
+    li {
+      margin-bottom: 5px;
+    }
+  }
+  
+  .welcome-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .navigation-section {
+    margin-top: 30px;
+    
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+  }
+}

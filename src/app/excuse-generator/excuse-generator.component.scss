@@ -1,0 +1,130 @@
+.excuse-container {
+  max-width: 700px;
+  margin: 0 auto;
+  
+  .api-key-notice {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ffeeba;
+    
+    p {
+      margin: 0;
+      
+      &.small {
+        font-size: 0.85rem;
+        margin-top: 8px;
+        opacity: 0.8;
+      }
+    }
+  }
+  
+  .situation-input {
+    margin-bottom: 25px;
+    
+    &.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    
+    textarea {
+      resize: vertical;
+      font-family: inherit;
+      min-height: 80px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+  }
+  
+  .result-section {
+    margin-bottom: 30px;
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #777;
+    }
+    
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .excuse-display {
+      background-color: #e8f4f8;
+      padding: 20px;
+      border-radius: 4px;
+      border-left: 4px solid #3498db;
+      
+      h3 {
+        margin-top: 0;
+        color: #2c3e50;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      
+      .excuse-text {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+  
+  .excuse-history {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    
+    h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .history-items {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+      .history-item {
+        padding: 15px;
+        background-color: white;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+        
+        .situation-label, .excuse-label {
+          margin-bottom: 5px;
+          
+          span {
+            font-weight: normal;
+          }
+        }
+        
+        .situation-label {
+          font-weight: bold;
+          color: #6c757d;
+          font-size: 0.9rem;
+        }
+        
+        .excuse-label {
+          font-weight: bold;
+          color: #3498db;
+        }
+      }
+    }
+  }
+}

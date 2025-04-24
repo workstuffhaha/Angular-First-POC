@@ -1,0 +1,101 @@
+.todo-container {
+  max-width: 600px;
+  margin: 0 auto;
+  
+  .add-todo {
+    margin-bottom: 25px;
+    
+    .input-group {
+      display: flex;
+      gap: 10px;
+      
+      input {
+        flex: 1;
+      }
+    }
+  }
+  
+  .todo-filters {
+    margin-bottom: 20px;
+    
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      
+      .btn {
+        flex: 1;
+        
+        &.active {
+          background-color: #3498db;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .todo-list {
+    margin-bottom: 20px;
+    
+    .no-tasks {
+      text-align: center;
+      color: #777;
+      padding: 20px 0;
+    }
+    
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: all 0.3s;
+      
+      &.completed {
+        background-color: #f9f9f9;
+      }
+      
+      .task-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        
+        input[type="checkbox"] {
+          width: auto;
+          cursor: pointer;
+        }
+        
+        .task-text {
+          &.completed-text {
+            text-decoration: line-through;
+            color: #999;
+          }
+        }
+        
+        .edit-task-input {
+          flex: 1;
+        }
+      }
+      
+      .task-actions {
+        display: flex;
+        gap: 8px;
+      }
+    }
+  }
+  
+  .todos-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    
+    p {
+      margin: 0;
+      color: #777;
+    }
+  }
+}

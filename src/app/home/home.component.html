@@ -1,0 +1,40 @@
+<div class="home-container">
+  <div class="card">
+    <h1>Welcome to Multi-Function Angular App</h1>
+    <p>This application showcases various Angular features including:</p>
+    <ul>
+      <li>Routing and navigation</li>
+      <li>Data binding</li>
+      <li>Event binding</li>
+      <li>Component communication</li>
+      <li>Angular services</li>
+    </ul>
+    
+    <div class="welcome-section">
+      <h2>Hello, <span [style.color]="nameColor">{{ userName || 'Guest' }}</span>!</h2>
+      <div class="form-group">
+        <label for="userName">Enter your name:</label>
+        <input 
+          type="text" 
+          id="userName" 
+          [(ngModel)]="userName" 
+          placeholder="Your name"
+          (keyup.enter)="changeTitleColor()"
+        >
+      </div>
+      <button class="btn" (click)="changeTitleColor()">Change Title Color</button>
+    </div>
+    
+    <div class="navigation-section">
+      <h3>Quick Links</h3>
+      <p>Navigate to the different parts of the application using the sidebar or these buttons:</p>
+      <div class="button-group">
+        <button class="btn" [routerLink]="['/todo-list']">Todo List</button>
+        <button class="btn" [routerLink]="['/xo-game']">XO Game</button>
+        <button class="btn" [routerLink]="['/calendar-scheduler']">Calendar</button>
+        <button class="btn" [routerLink]="['/excuse-generator']">Excuse Generator</button>
+        <button class="btn" [routerLink]="['/random-gif-generator']">GIF Generator</button>
+      </div>
+    </div>
+  </div>
+</div>

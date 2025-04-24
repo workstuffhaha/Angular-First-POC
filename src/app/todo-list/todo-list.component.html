@@ -1,0 +1,118 @@
+<div class="todo-container">
+  <div class="card">
+    <h1>Todo List</h1>
+    
+    <div class="add-todo">
+      <div class="form-group">
+        <label for="newTask">Add New Task</label>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="newTask" 
+            [(ngModel)]="newTask" 
+            placeholder="Enter task description"
+            (keyup.enter)="addTask()"
+          >
+          <button 
+            class="btn btn-success" 
+            (click)="addTask()" 
+            [disabled]="!newTask.trim()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="todo-filters">
+      <div class="form-group">
+        <label>Filter Tasks</label>
+        <div class="filter-buttons">
+          <button 
+            class="btn" 
+            [ngClass]="{'active': filter === 'all'}"
+            (click)="setFilter('all')"
+          >
+            All
+          </button>
+          <button 
+            class="btn" 
+            [ngClass]="{'active': filter === 'active'}"
+            (click)="setFilter('active')"
+          >
+            Active
+          </button>
+          <button 
+            class="btn" 
+            [ngClass]="{'active': filter === 'completed'}"
+            (click)="setFilter('completed')"
+          >
+            Completed
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="todo-list">
+      <div *ngIf="filteredTasks.length === 0" class="no-tasks">
+        <p>No tasks to display.</p>
+      </div>
+      
+      <div 
+        *ngFor="let task of filteredTasks; let i = index" 
+        class="todo-item"
+        [ngClass]="{'completed': task.completed}"
+      >
+        <div class="task-content">
+          <input 
+            type="checkbox" 
+            [checked]="task.completed"
+            (change)="toggleTaskStatus(task)"
+          >
+          <span 
+            class="task-text" 
+            [ngClass]="{'completed-text': task.completed}"
+            *ngIf="!task.editing"
+          >
+            {{ task.description }}
+          </span>
+          <input 
+            *ngIf="task.editing" 
+            type="text" 
+            [(ngModel)]="task.editText" 
+            (blur)="updateTask(task)"
+            (keyup.enter)="updateTask(task)"
+            class="edit-task-input"
+            #editInput
+          >
+        </div>
+        <div class="task-actions">
+          <button 
+            class="btn" 
+            (click)="editTask(task, editInput)"
+            *ngIf="!task.editing"
+          >
+            Edit
+          </button>
+          <button 
+            class="btn btn-danger" 
+            (click)="deleteTask(task)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="todos-info" *ngIf="tasks.length > 0">
+      <p>{{ getActiveTaskCount() }} task(s) remaining</p>
+      <button 
+        *ngIf="getCompletedTaskCount() > 0"
+        class="btn btn-danger"
+        (click)="clearCompleted()"
+      >
+        Clear Completed
+      </button>
+    </div>
+  </div>
+</div>

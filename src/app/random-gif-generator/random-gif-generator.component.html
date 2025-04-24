@@ -1,0 +1,65 @@
+<div class="gif-container">
+  <div class="card">
+    <h1>Random GIF Generator</h1>
+    
+    <div class="search-section">
+      <div class="form-group">
+        <label for="searchTerm">Enter a keyword for your GIF:</label>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="searchTerm" 
+            [(ngModel)]="searchTerm" 
+            placeholder="cat, dogs, funny, etc."
+            (keyup.enter)="getRandomGif()"
+          >
+          <button 
+            class="btn" 
+            (click)="getRandomGif()" 
+            [disabled]="isLoading || !searchTerm.trim()"
+          >
+            Get Random GIF
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="gif-content">
+      <div *ngIf="isLoading" class="loading">
+        <p>Loading your GIF...</p>
+      </div>
+      
+      <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div>
+      
+      <div *ngIf="!isLoading && !errorMessage && gifUrl" class="gif-display">
+        <img [src]="gifUrl" alt="Random GIF" class="gif-image">
+        <div class="gif-info">
+          <p *ngIf="gifTitle"><strong>Title:</strong> {{ gifTitle }}</p>
+          <div class="gif-actions">
+            <button class="btn" (click)="getRandomGif()">Get Another GIF</button>
+            <a [href]="gifUrl" class="btn btn-success" target="_blank" download>Download GIF</a>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="!isLoading && !errorMessage && !gifUrl && searchTermEntered" class="no-results">
+        <p>No GIFs found for "{{ searchTerm }}". Try another search term.</p>
+      </div>
+    </div>
+    
+    <div class="search-history" *ngIf="searchHistory.length > 0">
+      <h3>Recent Searches</h3>
+      <div class="history-tags">
+        <span 
+          *ngFor="let term of searchHistory" 
+          class="history-tag"
+          (click)="setSearchTerm(term)"
+        >
+          {{ term }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

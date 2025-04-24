@@ -1,0 +1,47 @@
+<div class="xo-game-container">
+  <div class="card">
+    <h1>Tic-Tac-Toe Game</h1>
+    
+    <div class="game-status" [ngClass]="{'winner': winner}">
+      <span *ngIf="!winner && !isDraw">Current Player: <strong>{{ currentPlayer }}</strong></span>
+      <span *ngIf="winner">Player <strong>{{ winner }}</strong> wins!</span>
+      <span *ngIf="isDraw && !winner">Game ended in a draw!</span>
+    </div>
+    
+    <div class="game-board">
+      <div class="board-row" *ngFor="let row of [0, 1, 2]">
+        <button 
+          class="board-cell" 
+          *ngFor="let col of [0, 1, 2]" 
+          [disabled]="board[row][col] || winner || isDraw"
+          (click)="makeMove(row, col)"
+          [ngClass]="{'x-cell': board[row][col] === 'X', 'o-cell': board[row][col] === 'O'}"
+        >
+          {{ board[row][col] }}
+        </button>
+      </div>
+    </div>
+    
+    <div class="game-controls">
+      <button class="btn" (click)="resetGame()">Restart Game</button>
+    </div>
+    
+    <div class="score-board">
+      <h3>Score</h3>
+      <div class="scores">
+        <div class="score-item">
+          <span>Player X:</span>
+          <span class="score-value">{{ scores.X }}</span>
+        </div>
+        <div class="score-item">
+          <span>Player O:</span>
+          <span class="score-value">{{ scores.O }}</span>
+        </div>
+        <div class="score-item">
+          <span>Draws:</span>
+          <span class="score-value">{{ scores.draw }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

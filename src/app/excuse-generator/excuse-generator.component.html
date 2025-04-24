@@ -1,0 +1,67 @@
+<div class="excuse-container">
+  <div class="card">
+    <h1>Excuse Generator</h1>
+    
+    <div *ngIf="!geminiReady" class="api-key-notice">
+      <p>⚠️ Please add your Gemini API key in the component file to use this feature.</p>
+      <p class="small">Open src/app/excuse-generator/excuse-generator.component.ts and replace YOUR_GEMINI_API_KEY with your actual API key.</p>
+    </div>
+    
+    <div class="situation-input" [class.disabled]="!geminiReady">
+      <div class="form-group">
+        <label for="situation">Describe the situation you need an excuse for:</label>
+        <textarea 
+          id="situation" 
+          rows="3" 
+          [(ngModel)]="situation" 
+          placeholder="e.g., 'I'm late for work' or 'I didn't complete my homework'"
+          [disabled]="!geminiReady || isLoading"
+        ></textarea>
+      </div>
+      
+      <div class="action-buttons">
+        <button 
+          class="btn" 
+          (click)="generateExcuse()" 
+          [disabled]="isLoading || !situation.trim() || !geminiReady"
+        >
+          Generate Excuse
+        </button>
+        <button 
+          class="btn" 
+          (click)="reset()" 
+          [disabled]="isLoading || (!situation && !excuse)"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+    
+    <div class="result-section" *ngIf="isLoading || excuse || errorMessage">
+      <div *ngIf="isLoading" class="loading">
+        <p>Crafting the perfect excuse...</p>
+      </div>
+      
+      <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div>
+      
+      <div *ngIf="!isLoading && !errorMessage && excuse" class="excuse-display">
+        <h3>Your Excuse:</h3>
+        <div class="excuse-text">
+          <p>{{ excuse }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="excuse-history" *ngIf="excuseHistory.length > 0">
+      <h3>Recent Excuses</h3>
+      <div class="history-items">
+        <div *ngFor="let item of excuseHistory" class="history-item">
+          <div class="situation-label">Situation: <span>{{ item.situation }}</span></div>
+          <div class="excuse-label">Excuse: <span>{{ item.excuse }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
