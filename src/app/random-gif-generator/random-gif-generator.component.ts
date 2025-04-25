@@ -21,7 +21,7 @@ export class RandomGifGeneratorComponent {
   searchHistory: string[] = [];
   
   // API configuration - Replace 'YOUR_API_KEY' with your actual Giphy API key
-  private apiKey: string = 'J3x65OJVdlmiM2Y8keUHpBCJwZq9rRBP';
+  private apiKey: string = 'YOUR_API_KEY';
   private giphyApiUrl: string = 'https://api.giphy.com/v1/gifs/random';
   
   constructor(private http: HttpClient) {}
