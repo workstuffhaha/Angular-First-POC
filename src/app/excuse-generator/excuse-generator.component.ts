@@ -20,7 +20,7 @@ export class ExcuseGeneratorComponent implements OnInit {
   geminiReady: boolean = false;
   
   // API configuration - Replace with your Gemini API key
-  private apiKey: string = 'AIzaSyCn3IfUKZh2c92GArDGAKwZ2ij8MDpfaB0'; // REPLACE THIS with your actual Gemini API key from https://aistudio.google.com/app/apikey
+  private apiKey: string = 'GEMINI_API_KEY'; // REPLACE THIS with your actual Gemini API key from https://aistudio.google.com/app/apikey
   private apiUrl: string = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent';
 
   
@@ -43,7 +43,7 @@ Just generate the excuse text directly as a response.`;
   
   ngOnInit(): void {
     // Reset the flag if API key is the placeholder
-    if (this.apiKey === 'AIzaSyCn3IfUKZh2c92GAoDGAKwZ2ij8MDpfaB0') {
+    if (this.apiKey === 'INCORRECT_GEMINI_API_KEY') {
       this.geminiReady = false;
       this.errorMessage = 'Please set a valid Gemini API key in the component file.';
     }
@@ -119,7 +119,7 @@ Just generate the excuse text directly as a response.`;
           console.error('Error generating excuse:', error);
           this.isLoading = false;
           
-          if (this.apiKey === 'AIzaSyCn3IfUKZh2c92GAoDGAKwZ2ij8MDpfaB0') {
+          if (this.apiKey === 'INCORRECT_GEMINI_API_KEY') {
             this.errorMessage = 'Please update the component with a valid Gemini API key.';
             this.geminiReady = false;
           } else if (error.status === 403) {
