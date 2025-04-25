@@ -1,6 +1,58 @@
 <div class="calendar-container">
   <div class="card">
     <h1>Calendar Scheduler</h1>
-    <p>This feature is under development. Check back soon!</p>
+    
+    <div class="calendar-wrapper" *ngIf="calendarVisible()">
+      <full-calendar 
+        [options]="calendarOptions">
+      </full-calendar>
+    </div>
+
+    <!-- Event Creation Modal -->
+    <div class="modal" *ngIf="showModal()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add New Event</h2>
+          <span class="close-button" (click)="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="event-title">Event Title*</label>
+            <input 
+              type="text" 
+              id="event-title" 
+              [(ngModel)]="newEvent.title" 
+              placeholder="Enter event title"
+              required
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="event-start">Start Date & Time</label>
+            <input 
+              type="datetime-local" 
+              id="event-start"
+              [ngModel]="selectedDate()"
+              (ngModelChange)="newEvent.start = $event"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <input 
+                type="checkbox" 
+                [(ngModel)]="newEvent.allDay"
+              />
+              All Day Event
+            </label>
+          </div>
+          
+          <div class="modal-actions">
+            <button class="btn save-btn" (click)="addEvent()">Save Event</button>
+            <button class="btn cancel-btn" (click)="closeModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

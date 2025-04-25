@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
   selector: 'app-excuse-generator',
@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './excuse-generator.component.html',
   styleUrl: './excuse-generator.component.scss'
 })
-export class ExcuseGeneratorComponent {
+export class ExcuseGeneratorComponent implements OnInit {
   // Component state
   situation: string = '';
   excuse: string = '';
@@ -20,8 +20,9 @@ export class ExcuseGeneratorComponent {
   geminiReady: boolean = false;
   
   // API configuration - Replace with your Gemini API key
-  private apiKey: string = 'AIzaSyCn3IfUKZh2c92GArDGAKwZ2ij8MDpfaB0';
-  private apiUrl: string = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+  private apiKey: string = 'AIzaSyCn3IfUKZh2c92GArDGAKwZ2ij8MDpfaB0'; // REPLACE THIS with your actual Gemini API key from https://aistudio.google.com/app/apikey
+  private apiUrl: string = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent';
+
   
   // System prompt defining the assistant's role
   private systemPrompt: string = `You are a professional Excuse Generator. 
@@ -36,8 +37,16 @@ Do not include any disclaimers, explanations, or anything other than the excuse 
 Just generate the excuse text directly as a response.`;
 
   constructor(private http: HttpClient) {
-    // Check if API key is set
-    this.geminiReady = this.apiKey !== 'YOUR_GEMINI_API_KEY';
+    // Initial check - API key should not be placeholder
+    this.geminiReady = this.apiKey.length > 10;
+  }
+  
+  ngOnInit(): void {
+    // Reset the flag if API key is the placeholder
+    if (this.apiKey === 'AIzaSyCn3IfUKZh2c92GAoDGAKwZ2ij8MDpfaB0') {
+      this.geminiReady = false;
+      this.errorMessage = 'Please set a valid Gemini API key in the component file.';
+    }
   }
   
   // Generate an excuse for the given situation
@@ -68,18 +77,27 @@ Just generate the excuse text directly as a response.`;
     
     // Set up HTTP headers with API key
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     });
     
     // Add API key as query parameter
     const apiUrlWithKey = `${this.apiUrl}?key=${this.apiKey}`;
     
     // Make the API request
-    this.http.post(apiUrlWithKey, requestBody, { headers })
+    this.http.post(apiUrlWithKey, requestBody, { 
+      headers,
+      observe: 'response'
+    })
       .subscribe({
         next: (response: any) => {
-          if (response && response.candidates && response.candidates[0]?.content?.parts) {
-            this.excuse = response.candidates[0].content.parts[0].text.trim();
+          console.log('API response status:', response.status);
+          console.log('API response body:', response.body);
+          
+          const responseBody = response.body;
+          
+          if (responseBody && responseBody.candidates && responseBody.candidates[0]?.content?.parts) {
+            this.excuse = responseBody.candidates[0].content.parts[0].text.trim();
             
             // Add to history
             this.excuseHistory.unshift({
@@ -92,6 +110,7 @@ Just generate the excuse text directly as a response.`;
               this.excuseHistory.pop();
             }
           } else {
+            console.error('Invalid API response structure:', response);
             this.errorMessage = 'Failed to generate an excuse. Please try again.';
           }
           this.isLoading = false;
@@ -100,12 +119,19 @@ Just generate the excuse text directly as a response.`;
           console.error('Error generating excuse:', error);
           this.isLoading = false;
           
-          if (this.apiKey === 'YOUR_GEMINI_API_KEY') {
+          if (this.apiKey === 'AIzaSyCn3IfUKZh2c92GAoDGAKwZ2ij8MDpfaB0') {
             this.errorMessage = 'Please update the component with a valid Gemini API key.';
+            this.geminiReady = false;
           } else if (error.status === 403) {
             this.errorMessage = 'API key invalid or expired. Please check your Gemini API key.';
+            this.geminiReady = false;
+          } else if (error.status === 400) {
+            this.errorMessage = 'Bad request - The API request was invalid. Check the request format.';
+            console.error('Request body:', requestBody);
+          } else if (error.status === 429) {
+            this.errorMessage = 'Too many requests - Rate limit exceeded. Try again later.';
           } else {
-            this.errorMessage = 'An error occurred while generating the excuse. Please try again.';
+            this.errorMessage = `API Error (${error.status}): ${error.error?.error?.message || error.message || 'Unknown error occurred'}`;
           }
         }
       });
