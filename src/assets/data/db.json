@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "role": "admin",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "profilePicture": "https://source.unsplash.com/random/200x200?portrait&sig=1",
+      "isActive": true,
+      "recoveryQuestion": {
+        "question": "What was your first pet's name?",
+        "answer": "Fluffy"
+      }
+    },
+    {
+      "id": 2,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "password": "password123",
+      "role": "user",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "profilePicture": "https://source.unsplash.com/random/200x200?portrait&sig=2",
+      "isActive": true,
+      "recoveryQuestion": {
+        "question": "What city were you born in?",
+        "answer": "New York"
+      }
+    },
+    {
+      "id": 3,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "password": "password123",
+      "role": "user",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "profilePicture": "https://source.unsplash.com/random/200x200?portrait&sig=3",
+      "isActive": true,
+      "recoveryQuestion": {
+        "question": "What is your mother's maiden name?",
+        "answer": "Johnson"
+      }
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "userId": 2,
+      "title": "Complete Angular project",
+      "description": "Finish the Angular navigation app",
+      "completed": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "calendarEvents": [
+    {
+      "id": 1,
+      "userId": 2,
+      "title": "Team Meeting",
+      "description": "Weekly team sync",
+      "startTime": "2024-01-01T10:00:00.000Z",
+      "endTime": "2024-01-01T11:00:00.000Z",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "excuses": [
+    {
+      "id": 1,
+      "category": "Work",
+      "excuse": "My dog ate my homework",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ]
+} 

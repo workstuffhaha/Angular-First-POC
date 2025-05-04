@@ -1,0 +1,80 @@
+<div class="recovery-container">
+  <div class="recovery-form">
+    <h2>Password Recovery</h2>
+    
+    <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          [class.is-invalid]="recoveryForm.get('email')?.invalid && recoveryForm.get('email')?.touched">
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('email')?.errors?.['required']">
+          Email is required
+        </div>
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('email')?.errors?.['email']">
+          Please enter a valid email
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="showQuestion">
+        <label>Security Question</label>
+        <p class="question">{{ userQuestion }}</p>
+        
+        <label for="answer">Your Answer</label>
+        <input 
+          type="text" 
+          id="answer" 
+          formControlName="answer"
+          [class.is-invalid]="recoveryForm.get('answer')?.invalid && recoveryForm.get('answer')?.touched">
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('answer')?.errors?.['required']">
+          Please provide your answer
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="showQuestion">
+        <label for="newPassword">New Password</label>
+        <input 
+          type="password" 
+          id="newPassword" 
+          formControlName="newPassword"
+          [class.is-invalid]="recoveryForm.get('newPassword')?.invalid && recoveryForm.get('newPassword')?.touched">
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('newPassword')?.errors?.['required']">
+          New password is required
+        </div>
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('newPassword')?.errors?.['minlength']">
+          Password must be at least 6 characters
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="showQuestion">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          [class.is-invalid]="recoveryForm.get('confirmPassword')?.invalid && recoveryForm.get('confirmPassword')?.touched">
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('confirmPassword')?.errors?.['required']">
+          Please confirm your new password
+        </div>
+        <div class="invalid-feedback" *ngIf="recoveryForm.errors?.['mismatch']">
+          Passwords do not match
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" [disabled]="recoveryForm.invalid || !showQuestion">Reset Password</button>
+      </div>
+    </form>
+
+    <div class="messages">
+      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+
+    <div class="login-link">
+      Remember your password? <a routerLink="/auth/login">Login here</a>
+    </div>
+  </div>
+</div> 
