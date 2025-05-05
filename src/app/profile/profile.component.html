@@ -2,6 +2,9 @@
   <!-- Admin View -->
   <div *ngIf="currentUser?.role === 'admin'" class="admin-view">
     <h2>User Management</h2>
+    <div class="admin-actions">
+      <button class="btn logout-btn" (click)="logout()">Logout</button>
+    </div>
     <div class="users-grid">
       <div class="user-card" *ngFor="let user of allUsers">
         <div class="user-header">

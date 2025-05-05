@@ -39,9 +39,9 @@ export class LoginComponent {
           next: (result: LoginResult) => {
             console.log('Login result:', result);
             if (result.success && result.user) {
-              // Store user session
-              localStorage.setItem('currentUser', JSON.stringify(result.user));
-              console.log('User stored in localStorage');
+              // Store user session in UserService
+              this.userService.setCurrentUser(result.user);
+              console.log('User stored in UserService');
               // Navigate to home
               this.router.navigate(['/home']).then(success => {
                 console.log('Navigation success:', success);

@@ -21,7 +21,7 @@ export class UserService {
   }
 
   private loadUsers(): void {
-    this.http.get<any>('/assets/data/db.json').subscribe({
+    this.http.get<any>('assets/data/db.json').subscribe({
       next: (data) => {
         console.log('Loaded users from db.json:', data.users);
         this.users = data.users;
@@ -56,22 +56,34 @@ export class UserService {
   }
 
   async login(email: string, password: string): Promise<Observable<{ success: boolean; user?: User }>> {
+    // Ensure users are loaded before proceeding
+    if (this.users.length === 0) {
+      console.log('Users not loaded yet. Waiting for loadUsers to complete.');
+      await new Promise(resolve => setTimeout(resolve, 100)); // Wait for users to load
+    }
+  
     console.log('Attempting login with:', { email, password });
     console.log('Available users:', this.users);
-    
+  
     const user = this.users.find(u => u.email === email);
     console.log('Found user:', user);
-    
+  
     if (!user) {
       console.log('No user found with email:', email);
       return of({ success: false });
     }
-
-    // For demo purposes, we'll do a simple string comparison
+  
+    // Validate password
     const isValid = password === user.password;
     console.log('Password validation result:', isValid);
-    
+  
     return of({ success: isValid, user: isValid ? user : undefined });
+  }
+
+  logout(): void {
+    console.log('Logging out...');
+    this.currentUser = null; // Clear the in-memory user
+    
   }
 
   getUserByEmail(email: string): Observable<User | null> {
@@ -98,4 +110,15 @@ export class UserService {
     
     return of(user.recoveryQuestion.answer.toLowerCase() === answer.toLowerCase());
   }
+
+  private currentUser: User | null = null;
+
+  setCurrentUser(user: User): void {
+    this.currentUser = user;
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUser;
+  }
+
 } 

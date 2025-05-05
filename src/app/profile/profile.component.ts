@@ -3,7 +3,7 @@ import { UserService } from '../services/user.service';
 import { User, UserRole } from '../interfaces/user.interface';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -23,7 +23,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router // Add this
   ) {}
 
   ngOnInit(): void {
@@ -31,10 +32,9 @@ export class ProfileComponent implements OnInit {
   }
 
   private loadCurrentUser(): void {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-      if (this.currentUser?.role === 'admin') {
+    this.currentUser = this.userService.getCurrentUser();
+    if (this.currentUser) {
+      if (this.currentUser.role === 'admin') {
         this.loadAllUsers();
       } else {
         this.isLoading = false;
@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    window.location.href = '/auth/login';
+    this.userService.logout(); // Clear user data using the service
+    this.router.navigate(['/auth/login']); // Navigate to the login page
   }
 } 

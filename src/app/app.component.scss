@@ -6,9 +6,10 @@
 
   .content-container {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    display: block;
+    padding: 80px 20px 20px 270px; // Top for top-bar, Left for sidebar
+    min-height: calc(100vh - 80px); // Accounts for top-bar
+    background-color: #f5f5f5;
   }
+  
 }
