@@ -2,8 +2,15 @@
   <div class="recovery-form">
     <h2>Password Recovery</h2>
     
+    <div class="steps">
+      <div class="step" [class.active]="currentStep >= 1">1. Enter Email</div>
+      <div class="step" [class.active]="currentStep >= 2">2. Security Question</div>
+      <div class="step" [class.active]="currentStep >= 3">3. New Password</div>
+    </div>
+
     <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
+      <!-- Step 1: Email -->
+      <div class="form-group" *ngIf="currentStep === 1">
         <label for="email">Email</label>
         <input 
           type="email" 
@@ -18,22 +25,42 @@
         </div>
       </div>
 
-      <div class="form-group" *ngIf="showQuestion">
-        <label>Security Question</label>
-        <p class="question">{{ userQuestion }}</p>
-        
-        <label for="answer">Your Answer</label>
-        <input 
-          type="text" 
-          id="answer" 
-          formControlName="answer"
-          [class.is-invalid]="recoveryForm.get('answer')?.invalid && recoveryForm.get('answer')?.touched">
-        <div class="invalid-feedback" *ngIf="recoveryForm.get('answer')?.errors?.['required']">
-          Please provide your answer
+      <!-- Step 2: Security Question -->
+      <div class="form-group" *ngIf="currentStep === 2">
+        <label for="questionId">Select Security Question</label>
+        <select 
+          id="questionId" 
+          formControlName="questionId"
+          (change)="onQuestionSelect()"
+          [class.is-invalid]="recoveryForm.get('questionId')?.invalid && recoveryForm.get('questionId')?.touched">
+          <option value="">Select a question</option>
+          <option *ngFor="let question of recoveryQuestions" [value]="question.id">
+            {{ question.question }}
+          </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="recoveryForm.get('questionId')?.errors?.['required']">
+          Please select a security question
         </div>
+
+        <div class="form-group" *ngIf="selectedQuestion">
+          <label for="answer">Your Answer</label>
+          <input 
+            type="text" 
+            id="answer" 
+            formControlName="answer"
+            [class.is-invalid]="recoveryForm.get('answer')?.invalid && recoveryForm.get('answer')?.touched">
+          <div class="invalid-feedback" *ngIf="recoveryForm.get('answer')?.errors?.['required']">
+            Please provide your answer
+          </div>
+        </div>
+
+        <button type="button" (click)="verifyAnswer()" [disabled]="!recoveryForm.get('answer')?.valid">
+          Verify Answer
+        </button>
       </div>
 
-      <div class="form-group" *ngIf="showQuestion">
+      <!-- Step 3: New Password -->
+      <div class="form-group" *ngIf="currentStep === 3">
         <label for="newPassword">New Password</label>
         <input 
           type="password" 
@@ -46,9 +73,7 @@
         <div class="invalid-feedback" *ngIf="recoveryForm.get('newPassword')?.errors?.['minlength']">
           Password must be at least 6 characters
         </div>
-      </div>
 
-      <div class="form-group" *ngIf="showQuestion">
         <label for="confirmPassword">Confirm New Password</label>
         <input 
           type="password" 
@@ -61,10 +86,8 @@
         <div class="invalid-feedback" *ngIf="recoveryForm.errors?.['mismatch']">
           Passwords do not match
         </div>
-      </div>
 
-      <div class="form-group">
-        <button type="submit" [disabled]="recoveryForm.invalid || !showQuestion">Reset Password</button>
+        <button type="submit" [disabled]="recoveryForm.invalid">Reset Password</button>
       </div>
     </form>
 

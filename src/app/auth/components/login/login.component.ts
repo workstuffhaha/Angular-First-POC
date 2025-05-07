@@ -1,26 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
-import { User } from '../../../interfaces/user.interface';
-
-interface LoginResult {
-  success: boolean;
-  user?: User;
-}
+import { GoogleAuthService } from '../../../services/google-auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private googleAuthService: GoogleAuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -29,39 +26,60 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    // Check if user is already logged in
+    const currentUser = this.userService.getCurrentUser();
+    if (currentUser) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
   async onSubmit(): Promise<void> {
     if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
       const { email, password } = this.loginForm.value;
       
       try {
-        const loginResult = await this.userService.login(email, password);
-        loginResult.subscribe({
-          next: (result: LoginResult) => {
-            console.log('Login result:', result);
-            if (result.success && result.user) {
-              // Store user session in UserService
-              this.userService.setCurrentUser(result.user);
-              console.log('User stored in UserService');
-              // Navigate to home
-              this.router.navigate(['/home']).then(success => {
-                console.log('Navigation success:', success);
-                if (!success) {
-                  this.errorMessage = 'Failed to navigate to home page';
-                }
-              });
+        const result = await this.userService.login(email, password);
+        result.subscribe({
+          next: (response) => {
+            if (response.success && response.user) {
+              this.userService.setCurrentUser(response.user);
+              this.router.navigate(['/dashboard']);
             } else {
               this.errorMessage = 'Invalid email or password';
             }
           },
-          error: (error) => {
-            console.error('Login error:', error);
+          error: () => {
             this.errorMessage = 'An error occurred. Please try again.';
+          },
+          complete: () => {
+            this.isLoading = false;
           }
         });
       } catch (error) {
-        console.error('Login exception:', error);
         this.errorMessage = 'An error occurred. Please try again.';
+        this.isLoading = false;
       }
+    }
+  }
+
+  async signInWithGoogle(): Promise<void> {
+    try {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      const googleUser = await this.googleAuthService.signInWithGoogle();
+      const user = await this.googleAuthService.handleGoogleSignIn(googleUser);
+      
+      this.userService.setCurrentUser(user);
+      this.router.navigate(['/dashboard']);
+    } catch (error) {
+      this.errorMessage = 'Failed to sign in with Google. Please try again.';
+    } finally {
+      this.isLoading = false;
     }
   }
 

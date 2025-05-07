@@ -31,19 +31,31 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+        <button type="submit" [disabled]="loginForm.invalid || isLoading">
+          {{ isLoading ? 'Logging in...' : 'Login' }}
+        </button>
       </div>
     </form>
+
+    <div class="divider">
+      <span>or</span>
+    </div>
+
+    <div class="social-login">
+      <button type="button" class="google-btn" (click)="signInWithGoogle()" [disabled]="isLoading">
+        <img src="assets/images/google-icon.png" alt="Google">
+        Sign in with Google
+      </button>
+    </div>
 
     <div class="messages">
       <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
     </div>
 
     <div class="links">
-      <a (click)="navigateToRecovery()" class="forgot-password">Forgot Password?</a>
-      <div class="register-link">
-        Don't have an account? <a routerLink="/auth/register">Register here</a>
-      </div>
+      <a routerLink="/auth/recovery">Forgot Password?</a>
+      <span class="separator">|</span>
+      <a routerLink="/auth/register">Create Account</a>
     </div>
   </div>
 </div> 

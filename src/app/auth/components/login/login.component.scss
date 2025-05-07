@@ -25,20 +25,27 @@
   }
 
   .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 
     label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #555;
+      color: #333;
+      font-weight: 500;
     }
 
     input {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.75rem;
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
 
       &.is-invalid {
         border-color: #dc3545;
@@ -73,6 +80,60 @@
     }
   }
 
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+
+    span {
+      padding: 0 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+
+  .social-login {
+    margin-bottom: 1.5rem;
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      img {
+        width: 24px;
+        height: 24px;
+        margin-right: 0.75rem;
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      &:disabled {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+  }
+
   .messages {
     margin-top: 1rem;
     text-align: center;
@@ -85,20 +146,24 @@
   .links {
     margin-top: 1.5rem;
     text-align: center;
+    color: #666;
 
     a {
       color: #007bff;
       text-decoration: none;
-      cursor: pointer;
 
       &:hover {
         text-decoration: underline;
       }
     }
 
+    .separator {
+      margin: 0 0.5rem;
+      color: #ddd;
+    }
+
     .register-link {
       margin-top: 1rem;
-      color: #666;
     }
   }
 } 
